@@ -28,6 +28,13 @@ async function run() {
             const result = await products.toArray();
             res.send(result);
         });
+
+        // get flash deal product
+        app.get('/flashdeal', async (req, res)=>{
+            const products = productsCollection.find({}).limit(5);
+            const result = await products.toArray();
+            res.send(result);
+        });
         
     } finally {
         // await client.close();

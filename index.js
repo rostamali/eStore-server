@@ -58,6 +58,15 @@ async function run() {
             res.send(result);
         })
 
+        // order info send to the ui
+        app.get('/orders/:email', async (req, res)=>{
+            const email = req.params.email;
+            const query = { email: email };
+            const orders = orderCollection.find(query);
+            const result = await orders.toArray();
+            res.send(result);
+        })
+
 
 
         // STIPE POST REQUEST

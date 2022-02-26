@@ -33,12 +33,19 @@ async function run() {
             res.send(result);
         });
 
-        // get flash deal product
+        // get flashdeal products
         app.get('/flashdeal', async (req, res)=>{
-            const products = flashDealCollection.find({});
+            const products = shopCollection.find({}).limit(5);
             const result = await products.toArray();
             res.send(result);
         });
+
+        // get flash deal product
+        // app.get('/flashdeal', async (req, res)=>{
+        //     const products = flashDealCollection.find({});
+        //     const result = await products.toArray();
+        //     res.send(result);
+        // });
 
 
         // STIPE POST REQUEST

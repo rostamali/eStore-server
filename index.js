@@ -35,17 +35,20 @@ async function run() {
 
         // get flashdeal products
         app.get('/flashdeal', async (req, res)=>{
-            const products = shopCollection.find({}).limit(5);
+            const query = { feature: "flashDeal" };
+            const products = shopCollection.find(query).limit(5);
             const result = await products.toArray();
             res.send(result);
         });
 
-        // get flash deal product
-        // app.get('/flashdeal', async (req, res)=>{
-        //     const products = flashDealCollection.find({});
-        //     const result = await products.toArray();
-        //     res.send(result);
-        // });
+        // get flashdeal products
+        app.get('/trends', async (req, res)=>{
+            const query = { feature: "trends" };
+            const products = shopCollection.find(query).limit(7);
+            const result = await products.toArray();
+            res.send(result);
+        });
+
 
 
         // STIPE POST REQUEST

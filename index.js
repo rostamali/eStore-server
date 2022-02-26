@@ -12,6 +12,7 @@ require('dotenv').config()
 const stripe = require("stripe")(`${process.env.STRIPE_SECRET}`);
 
 
+
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.kniae.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
@@ -25,6 +26,7 @@ async function run() {
         const database = client.db("eStore");
         const shopCollection = database.collection("products");
         const flashDealCollection = database.collection("flashDeal");
+        const orderCollection = database.collection('orders');
 
         // get products
         app.get('/products', async (req, res)=>{
@@ -41,13 +43,20 @@ async function run() {
             res.send(result);
         });
 
-        // get flashdeal products
+        // get trends products
         app.get('/trends', async (req, res)=>{
             const query = { feature: "trends" };
             const products = shopCollection.find(query).limit(7);
             const result = await products.toArray();
             res.send(result);
         });
+
+        // get the order from ui
+        app.post('/order', async (req, res)=>{
+            const newOrder = req.body;
+            const result = await orderCollection.insertOne(newOrder);
+            res.send(result);
+        })
 
 
 
@@ -64,7 +73,7 @@ async function run() {
                 payment_method_types: ['card']
             });
 
-            res.send({
+            res.json({
                 clientSecret: paymentIntent.client_secret
             });
 
@@ -83,5 +92,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {
-//   console.log(client)
+    console.log(port)
 })
